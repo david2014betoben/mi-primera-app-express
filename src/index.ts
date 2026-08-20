@@ -27,6 +27,18 @@ interface actualizarEstudiante {
   email: string;
   bootcamp: string;
 }
+
+interface estudianteFiltrado {
+  bootcamp?: string;
+}
+
+export type {
+  Estudiante,
+  crearEstudiante,
+  actualizarEstudiante,
+  estudianteFiltrado,
+};
+
 app.get("/", function (req: Request, res: Response) {
   res.send("El servidor esta en pie");
 });
@@ -43,5 +55,3 @@ app.use("/api/estudiantes", estudiantesRouter);
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
-
-export type { Estudiante, crearEstudiante, actualizarEstudiante };

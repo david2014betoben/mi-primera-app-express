@@ -1,9 +1,9 @@
-import express, { type Router } from "express"; //cambio por que estamos usando pnpm
-import type { Request, Response } from "express";
+import express, { type Router, type Request, type Response } from "express"; //cambio por que estamos usando pnpm
 import type {
   Estudiante,
   crearEstudiante,
   actualizarEstudiante,
+  estudianteFiltrado,
 } from "../index.js";
 
 const router: Router = express.Router(); //cambio por que estamos usando pnpm
@@ -14,17 +14,6 @@ let estudiantes: Estudiante[] = [];
 
 router.get("/", async function (req: Request, res: Response) {
   res.json(estudiantes);
-});
-
-//endpoint id especifico
-router.get("/:id", async function (req: Request, res: Response) {
-  let idBuscado = Number(req.params.id);
-  const encontrado = estudiantes.filter((e) => e.id === idBuscado);
-  if (encontrado.length > 0) {
-    res.json(encontrado);
-  } else {
-    return res.status(404).json({ error: "Estudiante no encontrado" });
-  }
 });
 
 router.post(
@@ -79,6 +68,38 @@ router.delete("/:id", function (req: Request, res: Response) {
   } else {
     estudiantes = estudiantes.filter((e) => e.id !== idBuscado);
     res.json({ mensaje: "ESTUDIANTE ELIMINADO EXITOSAMENTE" });
+  }
+});
+
+//===========APLICANDO FILTROS==============
+router.get(
+  "/",
+  function (req: Request<{}, {}, {}, estudianteFiltrado>, res: Response) {
+    const { bootcamp } = req.query;
+    let resultado = [...estudiantes];
+
+    //FILTRO PARA EL NOMBRE DEL PRODUCTO
+    if (bootcamp) {
+      resultado = resultado.filter(
+        (e) => e.bootcamp.toLowerCase() === bootcamp.toLowerCase(),
+      );
+    }
+    // mostrar el resultado filtrado
+    return res.json({
+      total: resultado.length,
+      datos: resultado,
+    });
+  },
+);
+
+//endpoint id especifico
+router.get("/:id", async function (req: Request, res: Response) {
+  let idBuscado = Number(req.params.id);
+  const encontrado = estudiantes.filter((e) => e.id === idBuscado);
+  if (encontrado.length > 0) {
+    res.json(encontrado);
+  } else {
+    return res.status(404).json({ error: "Estudiante no encontrado" });
   }
 });
 
