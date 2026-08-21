@@ -15,15 +15,15 @@ router.post(
   "/",
   function (req: Request<{}, {}, crearEstudiante>, res: Response) {
     // #swagger.description = 'Crea un nuevo estudiante'
-    const { nombre, email, bootcamp } = req.body;
-    if (!nombre || !email || !bootcamp) {
+    const { name, email, bootcamp } = req.body;
+    if (!name || !email || !bootcamp) {
       return res
         .status(400)
         .json({ error: "faltan datos que son obligatorios" });
     }
     const nuevoEstudiante: Estudiante = {
       id: estudiantes.length > 0 ? estudiantes.length + 1 : 1,
-      nombre,
+      name,
       email,
       bootcamp,
     };
@@ -58,11 +58,11 @@ router.put("/:id", function (req: Request, res: Response) {
   if (index === -1) {
     return res.status(404).json({ error: "Estudiante no encontrado" });
   } else {
-    const { nombre, email, bootcamp }: actualizarEstudiante = req.body;
+    const { name, email, bootcamp }: actualizarEstudiante = req.body;
 
     estudiantes[index] = {
       id: idBuscado,
-      nombre: nombre ?? estudiantes[index]?.nombre,
+      name: name ?? estudiantes[index]?.name,
       email: email ?? estudiantes[index]?.email,
       bootcamp: bootcamp ?? estudiantes[index]?.bootcamp,
     };
@@ -109,11 +109,11 @@ router.get(
             type: 'string'
     } */
 
-    const { curso, nombre, email } = req.query;
+    const { bootcamp, name, email } = req.query;
     let resultado = [...estudiantes];
-    if (nombre) {
+    if (name) {
       resultado = resultado.filter(
-        (e) => e.nombre.toLowerCase() === nombre.toLowerCase(),
+        (e) => e.name.toLowerCase() === name.toLowerCase(),
       );
     }
     if (email) {
@@ -121,9 +121,9 @@ router.get(
         (e) => e.email.toLowerCase() === email.toLowerCase(),
       );
     }
-    if (curso) {
+    if (bootcamp) {
       resultado = resultado.filter(
-        (e) => e.bootcamp.toLowerCase() === curso.toLowerCase(),
+        (e) => e.bootcamp.toLowerCase() === bootcamp.toLowerCase(),
       );
     }
     // mostrar el resultado filtrado

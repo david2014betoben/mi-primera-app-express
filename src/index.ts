@@ -4,10 +4,16 @@ import estudiantesRouter from "./routes/estudiantes.js";
 import fs from "node:fs/promises";
 import swaggerUi from "swagger-ui-express";
 import swaggerOutput from "../src/swagger_output.json" with { type: "json" };
+import dotenv from "dotenv";
+import cors from "cors";
 
+dotenv.config();
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT ?? 3000;
+const NODE_ENV = process.env.NODE_ENV;
+const API_KEY = process.env.API_KEY;
 
+app.use(cors());
 //MIDDLEWARE
 app.use(express.json());
 

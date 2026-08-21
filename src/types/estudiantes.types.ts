@@ -1,25 +1,25 @@
 interface Estudiante {
   id: number;
-  nombre: string;
+  name: string;
   email: string;
   bootcamp: string;
 }
 
 interface crearEstudiante {
-  nombre: string;
+  name: string;
   email: string;
   bootcamp: string;
 }
 
 interface actualizarEstudiante {
-  nombre: string;
+  name: string;
   email: string;
   bootcamp: string;
 }
 
 interface estudianteFiltrado {
-  curso?: string;
-  nombre?: string;
+  bootcamp?: string;
+  name?: string;
   email?: string;
 }
 
