@@ -5,20 +5,16 @@ import type {
   actualizarEstudiante,
   estudianteFiltrado,
 } from "../index.js";
+import { estudiantes } from "../index.js";
 
 const router: Router = express.Router(); //cambio por que estamos usando pnpm
 
-let estudiantes: Estudiante[] = [];
-
 // las rutas van aquí
-
-router.get("/", async function (req: Request, res: Response) {
-  res.json(estudiantes);
-});
 
 router.post(
   "/",
   function (req: Request<{}, {}, crearEstudiante>, res: Response) {
+    // #swagger.description = 'Crea un nuevo estudiante'
     const { nombre, email, bootcamp } = req.body;
     if (!nombre || !email || !bootcamp) {
       return res
@@ -37,6 +33,24 @@ router.post(
 );
 
 router.put("/:id", function (req: Request, res: Response) {
+  // #swagger.description = 'Actualiza los datos de un estudiante'
+  /*#swagger.parameters['id'] = {
+      in: 'path',
+      description: 'ID del estudiante a actualizar',
+      required: true,
+      type: 'integer'
+    }
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Datos a actualizar del estudiante',
+      required: true,
+      schema: {
+        nombre: "Juan",
+        email: "juan123@gmail.com",
+        bootcamp: "fullstack"
+      }
+    }
+  */
   const idBuscado = Number(req.params.id);
   const index = estudiantes.findIndex(function (e) {
     return e.id === idBuscado;
@@ -57,6 +71,7 @@ router.put("/:id", function (req: Request, res: Response) {
 });
 
 router.delete("/:id", function (req: Request, res: Response) {
+  // #swagger.description = 'Elimina a un estudiante'
   const idBuscado = Number(req.params.id);
   const index = estudiantes.findIndex(function (e) {
     return e.id === idBuscado;
@@ -66,22 +81,49 @@ router.delete("/:id", function (req: Request, res: Response) {
       .status(404)
       .json({ error: "estudiante no encontrado no podemos eliminarlo" });
   } else {
-    estudiantes = estudiantes.filter((e) => e.id !== idBuscado);
+    estudiantes.splice(index, 1);
     res.json({ mensaje: "ESTUDIANTE ELIMINADO EXITOSAMENTE" });
   }
 });
 
 //===========APLICANDO FILTROS==============
+
 router.get(
   "/",
   function (req: Request<{}, {}, {}, estudianteFiltrado>, res: Response) {
-    const { bootcamp } = req.query;
-    let resultado = [...estudiantes];
+    // #swagger.description = 'Obtiene la lista de estudiantes con filtros opcionales'
 
-    //FILTRO PARA EL NOMBRE DEL PRODUCTO
-    if (bootcamp) {
+    /*  #swagger.parameters['nombre'] = {
+            in: 'query',
+            description: 'Filtrar por nombre (insensible a mayúsculas)',
+            type: 'string'
+    } */
+    /*  #swagger.parameters['email'] = {
+            in: 'query',
+            description: 'Filtrar por email exacto',
+            type: 'string'
+    } */
+    /*  #swagger.parameters['curso'] = {
+            in: 'query',
+            description: 'filtrar por cursos',
+            type: 'string'
+    } */
+
+    const { curso, nombre, email } = req.query;
+    let resultado = [...estudiantes];
+    if (nombre) {
       resultado = resultado.filter(
-        (e) => e.bootcamp.toLowerCase() === bootcamp.toLowerCase(),
+        (e) => e.nombre.toLowerCase() === nombre.toLowerCase(),
+      );
+    }
+    if (email) {
+      resultado = resultado.filter(
+        (e) => e.email.toLowerCase() === email.toLowerCase(),
+      );
+    }
+    if (curso) {
+      resultado = resultado.filter(
+        (e) => e.bootcamp.toLowerCase() === curso.toLowerCase(),
       );
     }
     // mostrar el resultado filtrado
@@ -94,6 +136,7 @@ router.get(
 
 //endpoint id especifico
 router.get("/:id", async function (req: Request, res: Response) {
+  // #swagger.description = 'Busca a un estudiante por su ID'
   let idBuscado = Number(req.params.id);
   const encontrado = estudiantes.filter((e) => e.id === idBuscado);
   if (encontrado.length > 0) {
