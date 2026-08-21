@@ -4,8 +4,8 @@ import type {
   crearEstudiante,
   actualizarEstudiante,
   estudianteFiltrado,
-} from "../index.js";
-import { estudiantes } from "../index.js";
+} from "../types/estudiantes.types.js";
+import { estudiantes } from "../data/estudiantes.data.js";
 
 const router: Router = express.Router(); //cambio por que estamos usando pnpm
 

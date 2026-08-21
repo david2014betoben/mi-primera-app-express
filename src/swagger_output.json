@@ -32,34 +32,6 @@
       }
     },
     "/api/estudiantes/": {
-      "get": {
-        "description": "Obtiene la lista de estudiantes con filtros opcionales",
-        "parameters": [
-          {
-            "name": "email",
-            "in": "query",
-            "description": "Filtrar por email exacto",
-            "type": "string"
-          },
-          {
-            "name": "nombre",
-            "in": "query",
-            "description": "Filtrar por nombre (insensible a mayúsculas)",
-            "type": "string"
-          },
-          {
-            "name": "curso",
-            "in": "query",
-            "description": "filtrar por cursos",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      },
       "post": {
         "description": "Crea un nuevo estudiante",
         "parameters": [
@@ -80,6 +52,34 @@
                 }
               }
             }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "get": {
+        "description": "Obtiene la lista de estudiantes con filtros opcionales",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Filtrar por email exacto",
+            "type": "string"
+          },
+          {
+            "name": "nombre",
+            "in": "query",
+            "description": "Filtrar por nombre (insensible a mayúsculas)",
+            "type": "string"
+          },
+          {
+            "name": "curso",
+            "in": "query",
+            "description": "filtrar por cursos",
+            "type": "string"
           }
         ],
         "responses": {

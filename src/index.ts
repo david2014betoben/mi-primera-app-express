@@ -13,40 +13,6 @@ app.use(express.json());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 
-interface Estudiante {
-  id: number;
-  nombre: string;
-  email: string;
-  bootcamp: string;
-}
-
-interface crearEstudiante {
-  nombre: string;
-  email: string;
-  bootcamp: string;
-}
-
-interface actualizarEstudiante {
-  nombre: string;
-  email: string;
-  bootcamp: string;
-}
-
-interface estudianteFiltrado {
-  curso?: string;
-  nombre?: string;
-  email?: string;
-}
-
-export type {
-  Estudiante,
-  crearEstudiante,
-  actualizarEstudiante,
-  estudianteFiltrado,
-};
-
-export let estudiantes: Estudiante[] = [];
-
 app.get("/", function (req: Request, res: Response) {
   res.send("El servidor esta en pie");
 });
